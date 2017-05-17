@@ -1,0 +1,32 @@
+# Vehicle Detection
+[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
+
+
+In this project, my goal is to write a software pipeline to detect vehicles in a video (start with the test_video.mp4 and later implement on full project_video.mp4)
+
+You can submit your writeup in markdown or use another method and submit a pdf instead.
+
+The Project
+---
+
+The goals / steps of this project are the following:
+
+* Perform a Histogram of Oriented Gradients (HOG) feature extraction on a labeled training set of images. The feature size is about 7x7x4x9x3=5292.
+* Apply a RGB2YCrCb color transform and append binned color features, as well as histograms of color, to HOG feature vector. The feature of the color transform is about 32x32x3=3192 and the histogram feature is 3x32=96.
+* For those first two steps normalize the features and randomize a selection for training and testing. The final features size is around 8460.
+* Train a classifier Linear SVM classifier using the above three combined features. The training samples totally are about 14067, half of which are car and the other half are non-car samples. The test sampels is about 3516. The prediction accuracy is about 98.9%.
+* Implement a sliding-window technique and use the trained classifier to search for vehicles in images. 
+* Run pipeline on a video stream (start with the test_video.mp4 and later implement on full project_video.mp4) and create a heat map of recurring detections frame by frame to reject outliers and follow detected vehicles. Use the threshold of 4 to filter out the false detection.
+* Estimate a bounding box for vehicles detected. Draw the box around the vehicles detected finally.
+
+Here are links to the labeled data for [vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/vehicles.zip) and [non-vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/non-vehicles.zip) examples to train the classifier.  These example images come from a combination of the [GTI vehicle image database](http://www.gti.ssr.upm.es/data/Vehicle_database.html), the [KITTI vision benchmark suite](http://www.cvlibs.net/datasets/kitti/), and examples extracted from the project video itself.   You are welcome and encouraged to take advantage of the recently released [Udacity labeled dataset](https://github.com/udacity/self-driving-car/tree/master/annotations) to augment your training data.  
+
+Some example images for testing your pipeline on single frames are located in the `test_images` folder.  The output from each stage of your pipeline are shown in the jupyter notebook. The final procossed video is saved as `output_project_video.mp4`.  
+
+Combine vehicle detection and lane-finding algorithm from the last project to do simultaneous lane-finding and vehicle detection.
+
+The major issue I met in this project is the mismatch of the color transform between the training process and the finding vechiles. The other important thing is to use more than three scaling factors in order to detect vehcicles in different distance. I used 0.5, 0.75 and 1.5. The window size is fixed as 64x64 while the image is scaled up by the scaling factors. For example, 0.5 scaling factor can be used to detect the cars farther away. While 1.5 is useful to detect the cars nearby.
+
+When combining the lane detection with the vehicle detection, apply the vechicle detection in the very beginning of the pipeline stage, followed by the lane detection. In one experiment, if the vehicle detection is done after the undistortion, there are some false detection showing up.
+
+
